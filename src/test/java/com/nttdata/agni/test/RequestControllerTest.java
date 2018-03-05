@@ -14,8 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import java.io.IOException;
@@ -51,13 +50,13 @@ public class RequestControllerTest {
     public void testTranslateHL7toFHIR() throws Exception {
         String transformRequest =  getInputMessage();     
 
-        mvc.perform(post(RESOURCE_LOCATION_BASEURL)
+        MvcResult response = mvc.perform(post(RESOURCE_LOCATION_BASEURL)
                     .content(transformRequest)
                     .contentType(MediaType.APPLICATION_XML)
                     .accept(MediaType.ALL))
                   .andExpect(status().is2xxSuccessful())   .andDo(print())      
                     .andReturn();
-            
+        saveOutputMessage(response.getResponse().getContentAsString());
                   
     }
        
@@ -68,7 +67,11 @@ public class RequestControllerTest {
 		return text;
 	}
 	
+	private void saveOutputMessage(String text) throws IOException {
 
+		Files.write(Paths.get("src/test/resources/output.txt"), text.getBytes());
+	}
+	
  
 
 }

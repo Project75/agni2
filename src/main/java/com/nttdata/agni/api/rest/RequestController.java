@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /*
- * Demonstrates how to set up RESTful API endpoints using Spring MVC
+ * @author harendra
  */
 
 @RestController

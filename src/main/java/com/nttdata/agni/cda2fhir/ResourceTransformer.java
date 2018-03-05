@@ -48,7 +48,7 @@ import org.hl7.fhir.dstu3.model.Organization;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
-
+import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.dstu3.model.Observation.ObservationReferenceRangeComponent;
 import org.openhealthtools.mdht.uml.cda.*;
 import org.openhealthtools.mdht.uml.cda.AssignedAuthor;
@@ -82,15 +82,15 @@ public class ResourceTransformer  {
 	private CodeSetTransformer vst;
 	private CCDTransformerImpl cdat;
 	private Reference defaultPatientRef;
-
+	private IIdType patIdType;
 	private final Logger logger = LoggerFactory.getLogger(ResourceTransformer.class);
 
 	public ResourceTransformer() {
 		dtt = new DataTypesTransformer();
 		vst = new CodeSetTransformer();
 		cdat = null;
-		// This is a default patient reference to be used when IResourceTransformer is not initiated with a ICDATransformer
-		defaultPatientRef = new Reference(new IdType("Patient", "0"));
+		patIdType = new IdType("Patient", UUID.randomUUID().toString());
+		defaultPatientRef = new Reference(patIdType);
 	}
 
 	public ResourceTransformer(CCDTransformerImpl cdaTransformer) {
@@ -542,7 +542,7 @@ public class ResourceTransformer  {
 		Bundle subjectBundle = tPatientRole2Patient(cdaClinicalDocument.getRecordTargets().get(0).getPatientRole());
 		for(BundleEntryComponent entry : subjectBundle.getEntry()){
 			fhirCompBundle.addEntry(new BundleEntryComponent().setResource(entry.getResource()));
-			if(entry.getResource() instanceof org.hl7.fhir.dstu3.model.Patient){
+			if(entry.getResource() instanceof Patient){
 				fhirComp.setSubject(new Reference(entry.getResource().getId()));
 			}
 		}
@@ -2140,8 +2140,8 @@ public class ResourceTransformer  {
 		fhirPatientBundle.addEntry(new BundleEntryComponent().setResource(fhirPatient));
 
 		// resource id
-		IdType resourceId = new IdType("Patient", getUniqueId());
-		fhirPatient.setId(resourceId);
+		//IdType resourceId = new IdType("Patient", getUniqueId());
+		fhirPatient.setId(patIdType);
 
 		// meta.profile
 		if(Config.isGenerateDafProfileMetadata())
