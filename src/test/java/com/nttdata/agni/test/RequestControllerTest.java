@@ -39,6 +39,8 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletInputStream;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -105,6 +107,8 @@ public class RequestControllerTest {
 		//System.out.println("ZZ-Input File:"+text);
 			return text;
 	}
+	
+
  
 
     private byte[] toJson(Object r) throws Exception {
