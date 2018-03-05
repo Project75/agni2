@@ -47,6 +47,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class CCDTransformerImpl  {
 
     private int counter;
@@ -175,7 +176,7 @@ public class CCDTransformerImpl  {
             patientRef = new Reference(ccdBundle.getEntry().get(1).getResource().getId());
         else // Correct the subject at composition with given patient reference.
             ccdComposition.setSubject(patientRef);
-        System.out.println("Haren-patientRef-"+patientRef);
+        //System.out.println("Haren-patientRef-"+patientRef);
         // transform the sections
         for(Section cdaSec: ccd.getSections()) {
             SectionComponent fhirSec = resTransformer.tSection2Section(cdaSec);

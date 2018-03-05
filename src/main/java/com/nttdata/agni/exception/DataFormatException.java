@@ -3,6 +3,7 @@ package com.nttdata.agni.exception;
 /**
  * for HTTP 400 errors
  */
+@SuppressWarnings("serial")
 public final class DataFormatException extends RuntimeException {
     public DataFormatException() {
         super();
